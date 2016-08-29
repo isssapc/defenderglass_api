@@ -18,20 +18,40 @@ class Productos extends MY_Controller {
         $this->response($nuevo);
     }
 
-    public function one_get($id_producto) {        
+    public function one_get($id_producto) {
         $producto = $this->producto_model->get_producto($id_producto);
         $this->response($producto);
     }
 
-    public function remove_delete($id_producto) {        
+    public function remove_delete($id_producto) {
         $nuevo = $this->producto_model->del_producto($id_producto);
         $this->response($nuevo);
     }
 
     public function update_put($id_producto) {
         $producto = $this->post('producto');
-        $nuevo = $this->producto_model->update_producto($id_producto,$producto);
+        $nuevo = $this->producto_model->update_producto($id_producto, $producto);
         $this->response($nuevo);
+    }
+
+    public function niveles_seguridad_get() {
+        $datos = $this->producto_model->get_niveles_seguridad();
+        $this->response($datos);
+    }
+
+    public function segmentos_get() {
+        $datos = $this->producto_model->get_segmentos();
+        $this->response($datos);
+    }
+
+    public function categorias_get() {
+        $datos = $this->producto_model->get_categorias();
+        $this->response($datos);
+    }
+
+    public function anchos_get() {
+        $datos = $this->producto_model->get_anchos();
+        $this->response($datos);
     }
 
 }

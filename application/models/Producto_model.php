@@ -7,10 +7,12 @@ class Producto_model extends CI_Model {
     }
 
     public function get_productos() {
-        $sql = "SELECT *, t.nombre AS tipo, c.nombre AS categoria
+        $sql = "SELECT *, s.nombre AS segmento, c.nombre AS categoria, seg.nombre AS seguridad, a.ancho
                 FROM producto p
-                JOIN tipo_producto t ON t.id_tipo=p.id_tipo
-                JOIN categoria_producto c ON c.id_categoria=p.id_categoria 
+                JOIN segmento_producto s ON s.id_segmento=p.id_segmento                
+                JOIN categoria_producto c ON c.id_categoria=p.id_categoria
+                JOIN ancho_producto a ON a.id_ancho=p.id_ancho
+                LEFT JOIN seguridad_producto seg ON seg.id_seguridad=p.id_seguridad
                 ORDER BY p.id_producto";
 
         $query = $this->db->query($sql);
@@ -24,6 +26,34 @@ class Producto_model extends CI_Model {
                 LIMIT 1;";
         $query = $this->db->query($sql);
         return $query->row_array();
+    }
+
+    public function get_segmentos() {
+        $sql = "SELECT *               
+                FROM segmento_producto";
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
+
+    public function get_categorias() {
+        $sql = "SELECT *               
+                FROM categoria_producto";
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
+
+    public function get_anchos() {
+        $sql = "SELECT *               
+                FROM ancho_producto";
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
+
+    public function get_niveles_seguridad() {
+        $sql = "SELECT *               
+                FROM seguridad_producto";
+        $query = $this->db->query($sql);
+        return $query->result_array();
     }
 
     public function add_producto($producto) {
