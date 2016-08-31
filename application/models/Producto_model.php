@@ -48,6 +48,13 @@ class Producto_model extends CI_Model {
         $query = $this->db->query($sql);
         return $query->result_array();
     }
+    
+      public function get_garantias() {
+        $sql = "SELECT *               
+                FROM garantia";
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
 
     public function get_niveles_seguridad() {
         $sql = "SELECT *               

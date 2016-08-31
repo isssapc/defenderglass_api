@@ -24,8 +24,8 @@ class Productos extends MY_Controller {
     }
 
     public function remove_delete($id_producto) {
-        $nuevo = $this->producto_model->del_producto($id_producto);
-        $this->response($nuevo);
+        $count = $this->producto_model->del_producto($id_producto);
+        $this->response($count);
     }
 
     public function update_put($id_producto) {
@@ -51,6 +51,11 @@ class Productos extends MY_Controller {
 
     public function anchos_get() {
         $datos = $this->producto_model->get_anchos();
+        $this->response($datos);
+    }
+    
+    public function garantias_get() {
+        $datos = $this->producto_model->get_garantias();
         $this->response($datos);
     }
 
