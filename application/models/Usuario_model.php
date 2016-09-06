@@ -7,8 +7,9 @@ class Usuario_model extends CI_Model {
     }
 
     public function get_usuarios() {
-        $sql = "SELECT *
+        $sql = "SELECT u.id_usuario, u.email, u.nombre, u.id_rol, r.rol
                 FROM usuario u
+                JOIN rol_usuario r ON r.id_rol= u.id_rol
                 ORDER BY u.nombre";
 
         $query = $this->db->query($sql);
@@ -22,9 +23,10 @@ class Usuario_model extends CI_Model {
     }
 
     public function get_usuario($id_usuario) {
-        $sql = "SELECT *               
-                FROM usuario 
-                WHERE id_usuario=$id_usuario 
+        $sql = "SELECT u.id_usuario, u.email, u.nombre, u.id_rol, r.rol
+                FROM usuario u
+                JOIN rol_usuario r ON r.id_rol= u.id_rol 
+                WHERE u.id_usuario=$id_usuario 
                 LIMIT 1;";
         $query = $this->db->query($sql);
         return $query->row_array();

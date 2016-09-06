@@ -29,9 +29,9 @@ class GastosExtras extends MY_Controller {
     }
 
     public function update_put($id_gasto) {
-        $gasto = $this->post('gasto');
-        $nuevo = $this->gastoextra_model->update_gasto($id_gasto,$gasto);
-        $this->response($nuevo);
+        $gasto = $this->put('gasto');
+        $datos = $this->gastoextra_model->update_gasto($id_gasto,$gasto);
+        $this->response($datos);
     }
 
 }

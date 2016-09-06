@@ -29,9 +29,9 @@ class Parametros extends MY_Controller {
     }
 
     public function update_put($id_parametro) {
-        $parametro = $this->post('parametro');
-        $nuevo = $this->parametro_model->update_parametro($id_parametro,$parametro);
-        $this->response($nuevo);
+        $parametro = $this->put('parametro');
+        $datos = $this->parametro_model->update_parametro($id_parametro,$parametro);
+        $this->response($datos);
     }
 
 }

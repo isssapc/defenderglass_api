@@ -24,12 +24,12 @@ class Usuarios extends MY_Controller {
     }
 
     public function remove_delete($id_usuario) {        
-        $nuevo = $this->usuario_model->del_usuario($id_usuario);
-        $this->response($nuevo);
+        $datos = $this->usuario_model->del_usuario($id_usuario);
+        $this->response($datos);
     }
 
     public function update_put($id_usuario) {
-        $usuario = $this->post('usuario');
+        $usuario = $this->put('usuario');
         $nuevo = $this->usuario_model->update_usuario($id_usuario,$usuario);
         $this->response($nuevo);
     }

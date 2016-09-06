@@ -15,7 +15,6 @@ class GastoExtra_model extends CI_Model {
         return $query->result_array();
     }
 
- 
     public function get_gasto($id_gasto) {
         $sql = "SELECT *               
                 FROM gasto_extra 

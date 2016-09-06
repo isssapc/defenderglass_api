@@ -63,6 +63,10 @@ $route['productos/(:num)']['get'] = 'productos/one/$1';
 $route['productos/(:num)']['put'] = 'productos/update/$1';
 $route['productos/(:num)']['delete'] = 'productos/remove/$1';
 
+$route['parametros/(:num)']['get'] = 'parametros/one/$1';
+$route['parametros/(:num)']['put'] = 'parametros/update/$1';
+$route['parametros/(:num)']['delete'] = 'parametros/remove/$1';
+
 $route['cotizaciones/(:num)']['get'] = 'cotizaciones/one/$1';
 $route['cotizaciones/(:num)']['put'] = 'cotizaciones/update/$1';
 $route['cotizaciones/(:num)']['delete'] = 'cotizaciones/remove/$1';

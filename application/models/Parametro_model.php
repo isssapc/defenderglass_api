@@ -8,8 +8,8 @@ class Parametro_model extends CI_Model {
 
     public function get_parametros() {
         $sql = "SELECT *
-                FROM parametro u
-                ORDER BY u.nombre";
+                FROM parametro 
+                ORDER BY id_parametro";
 
         $query = $this->db->query($sql);
         return $query->result_array();
