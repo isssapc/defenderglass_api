@@ -15,7 +15,6 @@ class Cotizacion_model extends CI_Model {
         return $query->result_array();
     }
 
-
     public function get_cotizacion($id_cotizacion) {
         $sql = "SELECT *               
                 FROM cotizacion 
@@ -48,6 +47,16 @@ class Cotizacion_model extends CI_Model {
         $this->db->query($sql);
         $count = $this->db->affected_rows();
         return $count;
+    }
+
+    public function reporte_cotizacion($id_cotizacion, $cotizacion) {
+
+        $where = "id_cotizacion = $id_cotizacion";
+        $sql = $this->db->update_string('cotizacion', $cotizacion, $where);
+        $this->db->query($sql);
+
+        $datos = $this->get_cotizacion($id_cotizacion);
+        return $datos;
     }
 
 }
