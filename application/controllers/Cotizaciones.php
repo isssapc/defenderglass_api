@@ -45,7 +45,7 @@ class Cotizaciones extends MY_Controller {
         try {
             $pdf = new FPDF('P', 'mm', 'letter');
             $pdf->AddPage();
-            $pdf->SetFont('Arial', '', 12);
+            $pdf->SetFont('Arial', '', 11);
             $h = 7;
             $borde = 0;
             $ln = 1;
@@ -77,51 +77,70 @@ class Cotizaciones extends MY_Controller {
             $pdf->Ln();
 
 
-            $intro = "Por medio de la presente ponemos a su consideración el presupuesto "
-                    . "de instalación de la película, la cual tiene las siguientes "
-                    . "características:";
+//            $intro = "Por medio de la presente ponemos a su consideración el presupuesto "
+//                    . "de instalación de la película, la cual tiene las siguientes "
+//                    . "características:";
+
+            $intro = $cotizacion['intro'];
             $pdf->MultiCell(0, $h, iconv('utf-8', 'iso-8859-1', $intro));
             $pdf->Ln();
 
             $pdf->SetX($x);
-            $pdf->Cell(80, $h, iconv('utf-8', 'iso-8859-1', 'Características Generales'), $borde);
-            $pdf->Cell(50, $h, iconv('utf-8', 'iso-8859-1', 'Valores Nominales'), $borde, $ln);
+            $pdf->Cell(80, $h, iconv('utf-8', 'iso-8859-1', 'CARACTERÍSTICAS GENERALES'), $borde);
+            $pdf->Cell(50, $h, iconv('utf-8', 'iso-8859-1', 'VALORES NOMINALES'), $borde, $ln);
 
             $pdf->SetX($x);
-            $pdf->Cell(80, $h, iconv('utf-8', 'iso-8859-1', 'Concepto 1'), $borde);
-            $pdf->Cell(50, $h, iconv('utf-8', 'iso-8859-1', 'Valores 1'), $borde, $ln);
+            $pdf->Cell(80, $h, iconv('utf-8', 'iso-8859-1', 'Modelo'), $borde);
+            $pdf->Cell(50, $h, iconv('utf-8', 'iso-8859-1', $cotizacion['rollo_152']['modelo']), $borde, $ln);
 
             $pdf->SetX($x);
-            $pdf->Cell(80, $h, iconv('utf-8', 'iso-8859-1', 'Concepto 2'), $borde);
-            $pdf->Cell(50, $h, iconv('utf-8', 'iso-8859-1', 'Valores 2'), $borde, $ln);
+            $pdf->Cell(80, $h, iconv('utf-8', 'iso-8859-1', 'Garantía'), $borde);
+            $pdf->Cell(50, $h, iconv('utf-8', 'iso-8859-1', $cotizacion['garantia']['nombre']), $borde, $ln);
 
             $pdf->SetX($x);
-            $pdf->Cell(80, $h, iconv('utf-8', 'iso-8859-1', 'Concepto 3'), $borde);
-            $pdf->Cell(50, $h, iconv('utf-8', 'iso-8859-1', 'Valores 3'), $borde, $ln);
+            $pdf->Cell(80, $h, iconv('utf-8', 'iso-8859-1', 'Protección contra rayos UV'), $borde);
+            $pdf->Cell(50, $h, iconv('utf-8', 'iso-8859-1', $cotizacion['rollo_152']['proteccion_uv']), $borde, $ln);
 
             $pdf->SetX($x);
-            $pdf->Cell(80, $h, iconv('utf-8', 'iso-8859-1', 'Concepto 4'), $borde);
-            $pdf->Cell(50, $h, iconv('utf-8', 'iso-8859-1', 'Valores 4'), $borde, $ln);
+            $pdf->Cell(80, $h, iconv('utf-8', 'iso-8859-1', 'Total de energía rechazada'), $borde);
+            $pdf->Cell(50, $h, iconv('utf-8', 'iso-8859-1', $cotizacion['rollo_152']['rechazo_solar']), $borde, $ln);
 
             $pdf->SetX($x);
-            $pdf->Cell(80, $h, iconv('utf-8', 'iso-8859-1', 'Concepto 5'), $borde);
-            $pdf->Cell(50, $h, iconv('utf-8', 'iso-8859-1', 'Valores 5'), $borde, $ln);
+            $pdf->Cell(80, $h, iconv('utf-8', 'iso-8859-1', 'Transmisión de luz visible'), $borde);
+            $pdf->Cell(50, $h, iconv('utf-8', 'iso-8859-1', $cotizacion['rollo_152']['transmision_luz']), $borde, $ln);
 
             $pdf->SetX($x);
-            $pdf->Cell(80, $h, iconv('utf-8', 'iso-8859-1', 'Concepto 6'), $borde);
-            $pdf->Cell(50, $h, iconv('utf-8', 'iso-8859-1', 'Valores 6'), $borde, $ln);
+            $pdf->Cell(80, $h, iconv('utf-8', 'iso-8859-1', 'm2 Totales'), $borde);
+            $pdf->Cell(50, $h, iconv('utf-8', 'iso-8859-1', $cotizacion['efectivo_m2']), $borde, $ln);
+
+
+            $inversion = ($cotizacion['total_efectivo_152'] + $cotizacion['total_merma_152']);
+            $pdf->SetX($x);
+            $pdf->Cell(80, $h, iconv('utf-8', 'iso-8859-1', 'Inversión Control Solar'), $borde);
+            $pdf->Cell(50, $h, iconv('utf-8', 'iso-8859-1', 'USD ' . number_format($inversion, 2, '.', ',')), $borde, $ln);
 
             $pdf->SetX($x);
-            $pdf->Cell(80, $h, iconv('utf-8', 'iso-8859-1', 'Concepto 7'), $borde);
-            $pdf->Cell(50, $h, iconv('utf-8', 'iso-8859-1', 'Valores 7'), $borde, $ln);
+            $pdf->Cell(80, $h, iconv('utf-8', 'iso-8859-1', 'Inversión Anual por garantía'), $borde);
+            $pdf->Cell(50, $h, iconv('utf-8', 'iso-8859-1', 'USD ' . number_format($inversion / 10, 2, '.', ',')), $borde, $ln);
+
+            $pdf->SetX($x);
+            $pdf->Cell(80, $h, iconv('utf-8', 'iso-8859-1', 'Inversión Mensual por garantía'), $borde);
+            $pdf->Cell(50, $h, iconv('utf-8', 'iso-8859-1', 'USD ' . number_format($inversion / (10 * 12), 2, '.', ',')), $borde, $ln);
+
+            $pdf->SetX($x);
+            $pdf->Cell(80, $h, iconv('utf-8', 'iso-8859-1', 'Inversión Diaria por garantía'), $borde);
+            $pdf->Cell(50, $h, iconv('utf-8', 'iso-8859-1', 'USD ' . number_format($inversion / (10 * 12 * 30), 2, '.', ',')), $borde, $ln);
+
 
             $pdf->Ln();
-            $nota = "- Precios más IVA \n"
-                    . "- Garantía de 10 años en desadhesión y decoloración \n"
-                    . "- Precios no incluyen gastos extras \n"
-                    . "- Se requiere anticipo de 70% \n"
-                    . "- Sujeto a programa de instalación \n"
-                    . "- Precios Sujetos al tipo de cambio del Dólar del día (Banco Santander Serfin)";
+//            $nota = "- Precios más IVA \n"
+//                    . "- Garantía de 10 años en desadhesión y decoloración \n"
+//                    . "- Precios no incluyen gastos extras \n"
+//                    . "- Se requiere anticipo de 70% \n"
+//                    . "- Sujeto a programa de instalación \n"
+//                    . "- Precios Sujetos al tipo de cambio del Dólar del día (Banco Santander Serfin)";
+
+            $nota = $cotizacion['notas'];
 
             $pdf->SetFont('Arial', '', 8);
             $h_xs = 4;
@@ -129,7 +148,7 @@ class Cotizaciones extends MY_Controller {
 
             $pdf->Ln();
 
-            $pdf->SetFont('Arial', '', 12);
+            $pdf->SetFont('Arial', '', 11);
             $pdf->Cell(0, $h, iconv('utf-8', 'iso-8859-1', 'ATENTAMENTE'), $borde, $ln, "C");
             $pdf->Ln();
             $pdf->Cell(0, $h, iconv('utf-8', 'iso-8859-1', 'Raúl González Calva'), $borde, $ln, "C");
@@ -137,12 +156,14 @@ class Cotizaciones extends MY_Controller {
 
 
 
-            $cuenta = "Información Bancaria para Depósitos:\n"
-                    . "Austral de Chiapas  S. A. de  C.V.\n"
-                    . "Banco: Bancomer\n"
-                    . "N. Cta.: 0163887138\n"
-                    . "Cta. Clave: 012100001638871381\n"
-                    . "Correo Electrónico: defenderglass_veracruz@hotmail.com";
+//            $cuenta = "Información Bancaria para Depósitos:\n"
+//                    . "Austral de Chiapas  S. A. de  C.V.\n"
+//                    . "Banco: Bancomer\n"
+//                    . "N. Cta.: 0163887138\n"
+//                    . "Cta. Clave: 012100001638871381\n"
+//                    . "Correo Electrónico: defenderglass_veracruz@hotmail.com";
+
+            $cuenta = $cotizacion['cuenta'];
 
             $pdf->SetFont('Arial', '', 8);
             $pdf->MultiCell(0, $h_xs, iconv('utf-8', 'iso-8859-1', $cuenta));
@@ -150,9 +171,15 @@ class Cotizaciones extends MY_Controller {
             //$pdf->Output();
             //$pdf->Output("ReporteEntradas.pdf", "I");
 
-            $value = $pdf->Output("Reporte.pdf", "S");
-            $s = base64_encode($value);
-            $this->response(["pdfbase64" => $s]);
+//            $value = $pdf->Output("Reporte.pdf", "S");             
+//            $s = base64_encode($value);
+//            $this->response(["pdfbase64" => $s]);
+            
+            $value = $pdf->Output("public/Reporte.pdf", "F"); 
+            $this->response(["filename" => 'Reporte.pdf']);
+            
+            
+            
         } catch (Exception $exc) {
             $this->response("NULL", REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
         }
