@@ -9,7 +9,7 @@ class GastoExtra_model extends CI_Model {
     public function get_gastos() {
         $sql = "SELECT *
                 FROM gasto_extra g
-                ORDER BY g.id_gasto";
+                ORDER BY g.tipo, g.nombre";
 
         $query = $this->db->query($sql);
         return $query->result_array();
