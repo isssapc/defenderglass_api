@@ -87,33 +87,36 @@ class Productos extends MY_Controller {
         $this->db->trans_start();
         //contador para el numero de filas
         $i = 1;
+        $respuesta = [];
         foreach ($objHoja as $fila) {
 
-            $clave = trim($fila['A']);
-            $marca = trim($fila['B']);
-            $modelo = trim($fila['C']);
-            $segmento = trim($fila['D']);
-            $categoria = trim($fila['E']);
-            $ancho = trim($fila['F']);
-            $seguridad = trim($fila['G']);
-            $precio = trim($fila['H']);
-            $proteccion_uv = trim($fila['I']);
-            $rechazo_solar = trim($fila['J']);
-            $transmision_luz = trim($fila['K']);
+            $clave = $fila['A'];
+            $marca = $fila['B'];
+            $modelo = $fila['C'];
+            $segmento = $fila['D'];
+            $categoria = $fila['E'];
+            $ancho = $fila['F'];
+            $seguridad = $fila['G'];
+            $precio = $fila['H'];
+            $proteccion_uv = $fila['I'];
+            $rechazo_solar = $fila['J'];
+            $transmision_luz = $fila['K'];
+            $respuesta[] = [$modelo, $segmento, $categoria, $ancho, $precio];
+            $respuesta[] = [isset($modelo), isset($segmento), isset($categoria), isset($ancho), isset($precio)];
 
 
             if (
-                    !empty($modelo) && 
-                    !empty($segmento) && 
-                    !empty($categoria) && 
-                    !empty($ancho) && 
-                    !empty($precio) && 
-                    is_numeric($segmento) && 
-                    is_numeric($categoria) && 
-                    is_numeric($ancho) && 
+                    isset($modelo) &&
+                    isset($segmento) &&
+                    isset($categoria) &&
+                    isset($ancho) &&
+                    isset($precio) &&
+                    is_numeric($segmento) &&
+                    is_numeric($categoria) &&
+                    is_numeric($ancho) &&
                     is_numeric($precio)) {
 
-                //insertamos la partida
+                //insertamos el producto
                 $data = array(
                     "clave" => $clave,
                     "modelo" => $modelo,
@@ -128,9 +131,11 @@ class Productos extends MY_Controller {
                     "id_segmento" => $segmento,
                 );
                 $this->db->insert('producto', $data);
-
+                $respuesta[] = $data;
                 //guardamos el id del producto
                 $id_producto = $this->db->insert_id();
+            } else {
+                $respuesta[] = "no esta $modelo";
             }
 
 
@@ -143,10 +148,12 @@ class Productos extends MY_Controller {
         //si hay algun error
         if ($this->db->trans_status() === FALSE) {
             $error = $this->db->error();
-            $this->response($error, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
+            return FALSE;
+            //$this->response($error, REST_Controller::HTTP_INTERNAL_SERVER_ERROR);
         }
         //no hay errores, devolvemos el id del prototipo creado
         //$this->response(array("id_prototipo" => $id_prototipo));
+        return $respuesta;
     }
 
     public function upload_post() {
@@ -167,10 +174,12 @@ class Productos extends MY_Controller {
         } else {
             $data = $this->upload->data();
 
-            $this->_insert_excel($data['file_name']);
+            $excel = $this->_insert_excel($data['file_name']);
 
 
-            $this->response(["data" => $data]);
+            //$this->response(["data" => $data]);
+
+            $this->response(["excel" => $excel]);
         }
     }
 
