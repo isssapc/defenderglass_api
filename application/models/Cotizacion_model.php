@@ -8,8 +8,8 @@ class Cotizacion_model extends CI_Model {
 
     public function get_cotizaciones() {
         $sql = "SELECT *
-                FROM cotizacion u
-                ORDER BY u.nombre";
+                FROM cotizacion c
+                ORDER BY c.fecha DESC";
 
         $query = $this->db->query($sql);
         return $query->result_array();
@@ -25,11 +25,16 @@ class Cotizacion_model extends CI_Model {
     }
 
     public function add_cotizacion($cotizacion) {
+        //borramos porque son arrays
+        unset($cotizacion['garantia']);
+        unset($cotizacion['rollo_152']);
+        
         $this->db->insert('cotizacion', $cotizacion);
         $id_cotizacion = $this->db->insert_id();
 
-        $nuevo = $this->get_cotizacion($id_cotizacion);
-        return $nuevo;
+        //$nuevo = $this->get_cotizacion($id_cotizacion);
+        //return $nuevo;
+        return $id_cotizacion;
     }
 
     public function update_cotizacion($id_cotizacion, $cotizacion) {

@@ -15,6 +15,12 @@ class Productos extends MY_Controller {
         $this->response($nuevo);
     }
 
+    public function add_post() {
+        $productos = $this->post('productos');
+        $data = $this->producto_model->add_productos($productos);
+        $this->response($data);
+    }
+
     public function index_get() {
         $nuevo = $this->producto_model->get_productos();
         $this->response($nuevo);
@@ -84,7 +90,7 @@ class Productos extends MY_Controller {
         $objHoja = $worksheet->toArray(null, true, true, true);
 
 //iniciamos la transaccion
-        $this->db->trans_start();
+        //$this->db->trans_start();
         //contador para el numero de filas
         $i = 1;
         $respuesta = [];
@@ -101,8 +107,8 @@ class Productos extends MY_Controller {
             $proteccion_uv = $fila['I'];
             $rechazo_solar = $fila['J'];
             $transmision_luz = $fila['K'];
-            $respuesta[] = [$modelo, $segmento, $categoria, $ancho, $precio];
-            $respuesta[] = [isset($modelo), isset($segmento), isset($categoria), isset($ancho), isset($precio)];
+            //$respuesta[] = [$modelo, $segmento, $categoria, $ancho, $precio];
+            //$respuesta[] = [isset($modelo), isset($segmento), isset($categoria), isset($ancho), isset($precio)];
 
 
             if (
@@ -130,12 +136,12 @@ class Productos extends MY_Controller {
                     "id_seguridad" => $seguridad,
                     "id_segmento" => $segmento,
                 );
-                $this->db->insert('producto', $data);
+                //$this->db->insert('producto', $data);
                 $respuesta[] = $data;
                 //guardamos el id del producto
                 $id_producto = $this->db->insert_id();
             } else {
-                $respuesta[] = "no esta $modelo";
+                //$respuesta[] = "no esta $modelo";
             }
 
 
@@ -143,8 +149,7 @@ class Productos extends MY_Controller {
         }
 
         //termina la transaccion
-        $this->db->trans_complete();
-
+        //$this->db->trans_complete();
         //si hay algun error
         if ($this->db->trans_status() === FALSE) {
             $error = $this->db->error();
@@ -179,7 +184,7 @@ class Productos extends MY_Controller {
 
             //$this->response(["data" => $data]);
 
-            $this->response(["excel" => $excel]);
+            $this->response(["productos" => $excel]);
         }
     }
 

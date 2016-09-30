@@ -48,8 +48,8 @@ class Producto_model extends CI_Model {
         $query = $this->db->query($sql);
         return $query->result_array();
     }
-    
-      public function get_garantias() {
+
+    public function get_garantias() {
         $sql = "SELECT *               
                 FROM garantia";
         $query = $this->db->query($sql);
@@ -69,6 +69,13 @@ class Producto_model extends CI_Model {
 
         $nuevo = $this->get_producto($id_producto);
         return $nuevo;
+    }
+
+    public function add_productos($productos) {
+
+        $this->db->insert_batch('producto', $productos);
+        $count = $this->db->affected_rows();
+        return $count;
     }
 
     public function update_producto($id_producto, $producto) {
