@@ -78,6 +78,22 @@ class Producto_model extends CI_Model {
         return $count;
     }
 
+    public function add_precios_automotriz($productos) {
+
+        $this->db->insert_batch('precios_automotriz', $productos);
+        $count = $this->db->affected_rows();
+        return $count;
+    }
+
+    public function get_precios_automotriz() {
+
+        $sql = "SELECT *               
+                FROM precios_automotriz
+                ORDER BY modelo";
+        $query = $this->db->query($sql);
+        return $query->result_array();
+    }
+
     public function update_producto($id_producto, $producto) {
 
         $where = "id_producto = $id_producto";
@@ -90,6 +106,13 @@ class Producto_model extends CI_Model {
 
     public function del_producto($id_producto) {
         $sql = "DELETE FROM producto WHERE id_producto = $id_producto LIMIT 1";
+        $this->db->query($sql);
+        $count = $this->db->affected_rows();
+        return $count;
+    }
+    
+      public function del_precio_automotriz($id_modelo) {
+        $sql = "DELETE FROM precios_automotriz WHERE id_modelo = $id_modelo LIMIT 1";
         $this->db->query($sql);
         $count = $this->db->affected_rows();
         return $count;

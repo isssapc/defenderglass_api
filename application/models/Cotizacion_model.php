@@ -7,9 +7,10 @@ class Cotizacion_model extends CI_Model {
     }
 
     public function get_cotizaciones() {
-        $sql = "SELECT *
-                FROM cotizacion c
-                ORDER BY c.fecha DESC";
+        $sql = "SELECT cot.*, cli.nombre AS cliente
+                FROM cotizacion cot
+                JOIN cliente cli ON cli.id_cliente =cot.id_cliente
+                ORDER BY cot.fecha DESC";
 
         $query = $this->db->query($sql);
         return $query->result_array();

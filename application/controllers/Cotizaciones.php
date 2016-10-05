@@ -79,6 +79,11 @@ class Cotizaciones extends MY_Controller {
 //                    . "de instalación de la película, la cual tiene las siguientes "
 //                    . "características:";
 
+
+
+            $pdf->Cell(0, $h, iconv('utf-8', 'iso-8859-1', $cotizacion['fecha']), $borde, $ln, 'R');
+            $pdf->MultiCell(0, $h, mb_strtoupper(iconv('utf-8', 'iso-8859-1', $cotizacion['dirigido']), 'iso-8859-1'));
+            $pdf->Ln();
             $intro = $cotizacion['intro'];
             $pdf->MultiCell(0, $h, iconv('utf-8', 'iso-8859-1', $intro));
             $pdf->Ln();
