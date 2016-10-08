@@ -21,14 +21,14 @@ class Productos extends MY_Controller {
         $this->response($data);
     }
 
-    public function add_precios_automotriz_post() {
+    public function add_productos_automotriz_post() {
         $productos = $this->post('productos');
-        $data = $this->producto_model->add_precios_automotriz($productos);
+        $data = $this->producto_model->add_productos_automotriz($productos);
         $this->response($data);
     }
 
-    public function precios_automotriz_get() {
-        $data = $this->producto_model->get_precios_automotriz();
+    public function productos_automotriz_get() {
+        $data = $this->producto_model->get_productos_automotriz();
         $this->response($data);
     }
 
@@ -47,15 +47,21 @@ class Productos extends MY_Controller {
         $this->response($count);
     }
 
-    public function del_precio_automotriz_delete($id_modelo) {
-        $count = $this->producto_model->del_precio_automotriz($id_modelo);
+    public function del_producto_automotriz_delete($id_modelo) {
+        $count = $this->producto_model->del_producto_automotriz($id_modelo);
         $this->response($count);
     }
 
     public function update_put($id_producto) {
-        $producto = $this->post('producto');
-        $nuevo = $this->producto_model->update_producto($id_producto, $producto);
-        $this->response($nuevo);
+        $producto = $this->put('producto');
+        $datos = $this->producto_model->update_producto($id_producto, $producto);
+        $this->response($datos);
+    }
+
+    public function update_automotriz_put($id_modelo) {
+        $producto = $this->put('producto');
+        $datos = $this->producto_model->update_producto_automotriz($id_modelo, $producto);
+        $this->response($datos);
     }
 
     public function niveles_seguridad_get() {
@@ -299,18 +305,19 @@ class Productos extends MY_Controller {
 
         return $respuesta;
     }
-    
-    
-      public function upload_ficha_tecnica_post() {
-        $config['upload_path'] = './public/fichas';
+
+    public function upload_ficha_tecnica_post() {
+        $path = "/public/fichas/";
+
+        $config['upload_path'] = "." . $path;
         $config['allowed_types'] = 'xls|xlsx|pdf|jpg|jpeg|png';
         $config['max_size'] = 4096; //4MB
         $config['overwrite'] = FALSE;
         $config['file_ext_tolower'] = TRUE;
         $config['remove_spaces'] = TRUE;
-
-
         $this->load->library('upload', $config);
+
+        $id_producto = $this->post('id_producto');
 
         $file = 'file';
         if (!$this->upload->do_upload($file)) {
@@ -318,8 +325,11 @@ class Productos extends MY_Controller {
             $this->response(["error" => $error], REST_Controller::HTTP_BAD_REQUEST);
         } else {
             $data = $this->upload->data();
-
-            $this->response(["data" => $data]);            
+            $archivo = $path . $data['file_name'];
+            $producto = ["ficha_tecnica" => $archivo];
+            $datos = $this->producto_model->update_producto($id_producto, $producto);
+            $this->response($datos["ficha_tecnica"]);
+            //$this->response(["data" => $data]);
         }
     }
 

@@ -8,14 +8,26 @@ class Cliente_model extends CI_Model {
 
     public function get_clientes() {
         $sql = "SELECT *
-                FROM cliente u
-                ORDER BY u.nombre";
+                FROM cliente c
+                ORDER BY c.nombre";
 
         $query = $this->db->query($sql);
         return $query->result_array();
     }
 
- 
+    public function search_clientes($search) {
+//        $sql = "SELECT *
+//                FROM cliente c
+//                WHERE c.nombre like $search
+//                ORDER BY c.nombre";
+
+        $this->db->like("nombre", $search);
+        $query = $this->db->get("cliente", 10);
+
+
+        return $query->result_array();
+    }
+
     public function get_cliente($id_cliente) {
         $sql = "SELECT *               
                 FROM cliente 
