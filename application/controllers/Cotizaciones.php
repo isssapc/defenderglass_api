@@ -8,6 +8,7 @@ class Cotizaciones extends MY_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->model('cotizacion_model');
+        setlocale(LC_TIME, "es_MX");
     }
 
     public function index_post() {
@@ -80,8 +81,15 @@ class Cotizaciones extends MY_Controller {
 //                    . "características:";
 
 
+            $date = new DateTime($cotizacion['fecha']);
 
-            $pdf->Cell(0, $h, iconv('utf-8', 'iso-8859-1', $cotizacion['fecha']), $borde, $ln, 'R');
+            //$time = strtotime($cotizacion["fecha"]);
+            $fecha = strftime("%A, %e de %B de %Y", $date->getTimestamp());
+            if ($fecha == "") {
+                $fecha = $date->format("d/m/Y");
+            }
+
+            $pdf->Cell(0, $h, $fecha, $borde, $ln, 'R');
             $pdf->MultiCell(0, $h, mb_strtoupper(iconv('utf-8', 'iso-8859-1', $cotizacion['dirigido']), 'iso-8859-1'));
             $pdf->Ln();
             $intro = $cotizacion['intro'];

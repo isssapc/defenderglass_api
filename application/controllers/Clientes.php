@@ -40,4 +40,13 @@ class Clientes extends MY_Controller {
         $this->response($nuevo);
     }
 
+    public function page_post() {
+        $start = $this->post("start");
+        $number = $this->post("number");
+        $params = $this->post("params");
+
+        $datos = $this->cliente_model->get_page($start, $number, $params);
+        $this->response($datos);
+    }
+
 }

@@ -37,6 +37,65 @@ class Cliente_model extends CI_Model {
         return $query->row_array();
     }
 
+    public function get_page($start, $number, $params) {
+
+
+        if (isset($params["search"]["predicateObject"]["id_cliente"])) {
+            $id_cliente = $params["search"]["predicateObject"]["id_cliente"];
+            $this->db->like('id_cliente', $id_cliente);
+        }
+        if (isset($params["search"]["predicateObject"]["nombre"])) {
+            $nombre = $params["search"]["predicateObject"]["nombre"];
+            $this->db->like('nombre', $nombre);
+        }
+        if (isset($params["search"]["predicateObject"]["rfc"])) {
+            $rfc = $params["search"]["predicateObject"]["rfc"];
+            $this->db->like('rfc', $rfc);
+        }
+
+       
+        if (isset($params["sort"]["predicate"])) {
+            $predicate = $params["sort"]["predicate"];
+            $desc = $params["sort"]["reverse"];
+
+            if ($predicate === "id_cliente") {
+                if ($desc) {
+                    $this->db->order_by('id_cliente', 'DESC');
+                } else {
+                    $this->db->order_by('id_cliente', 'ASC');
+                }
+            } else if ($predicate === "nombre") {
+                if ($desc) {
+                    $this->db->order_by('nombre', 'DESC');
+                } else {
+                    $this->db->order_by('nombre', 'ASC');
+                }
+            } else if ($predicate === "rfc") {
+                if ($desc) {
+                    $this->db->order_by('rfc', 'DESC');
+                } else {
+                    $this->db->order_by('rfc', 'ASC');
+                }
+            }
+        } else {
+            $this->db->order_by('nombre', 'ASC');
+        }
+       
+
+        $num_clientes = $this->db->count_all_results('cliente', FALSE);
+        $this->db->limit($number, $start);
+        $query = $this->db->get();
+
+
+
+        $clientes = $query->result_array();
+        //$num_clientes = count($clientes); //$this->db->count_all("cliente");
+
+        $count = ceil($num_clientes / $number);
+        $page = ["clientes" => $clientes, "numberOfPages" => $count];
+        return $page;
+    }
+
     public function add_cliente($cliente) {
         $this->db->insert('cliente', $cliente);
         $id_cliente = $this->db->insert_id();
